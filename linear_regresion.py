@@ -1,6 +1,7 @@
 import numpy as np
 from open_file import open_file
 
+
 def estimate_price(theta_0, theta_1, mileage):
     """
     Predict the price for a given mileage.
@@ -8,6 +9,7 @@ def estimate_price(theta_0, theta_1, mileage):
     estimatePrice(mileage) = θ0 + (θ1 * mileage)
     """
     return theta_0 + (theta_1 * mileage)
+
 
 def normalize_data(data):
     """
@@ -24,14 +26,16 @@ def normalize_data(data):
     mean_price = np.mean(price_values)
     std_price = np.std(price_values)
 
-    normalized_data = [((km - mean_km) / std_km, (price - mean_price) / std_price) for km, price in data]
+    normalized_data = [((km - mean_km) / std_km, (price - mean_price)
+                        / std_price) for km, price in data]
     return normalized_data, mean_km, std_km, mean_price, std_price
+
 
 def linear_regresion():
     """
-    Read a dataset and perform a linear regression on the data. 
-    Once the linear regression has completed, get the variables theta0 and theta1
-    for use in the estimate_price() program.
+    Read a dataset and perform a linear regression on the data.
+    Once the linear regression has completed, get the variables
+    theta0 and theta1 for use in the estimate_price() program.
     """
     theta_0 = 0
     theta_1 = 0
@@ -41,7 +45,9 @@ def linear_regresion():
 
     try:
         data_file = open_file("data.csv")
-        normalized_data, mean_km, std_km, mean_price, std_price = normalize_data(data_file)
+        (
+            normalized_data, mean_km, std_km, mean_price, std_price
+        ) = normalize_data(data_file)
 
         m = len(normalized_data)
 
@@ -55,7 +61,7 @@ def linear_regresion():
             theta_0 -= learning_rate * (temp_error0 / m)
             theta_1 -= learning_rate * (temp_error1 / m)
 
-        theta_1 = (theta_1 * std_price ) / std_km
+        theta_1 = (theta_1 * std_price) / std_km
         theta_0 = (theta_0 * std_price) + mean_price - (theta_1 * mean_km)
         np.save('train_values.npy', [theta_0, theta_1])
         print("-> Trained model!! <-")
@@ -65,6 +71,7 @@ def linear_regresion():
         print("Error: {}".format(error))
     except Exception as error:
         print("Unexpected error: {}".format(error))
+
 
 if __name__ == "__main__":
     linear_regresion()
