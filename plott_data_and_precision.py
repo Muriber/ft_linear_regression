@@ -1,4 +1,3 @@
-import sys as sys
 import numpy as np
 import matplotlib.pyplot as plt
 from open_file import open_file
@@ -9,11 +8,12 @@ def linear_regression_precision(theta_0, theta_1, data):
     """
     Calculates precision from a linear regression.
     Coefficient of Determination:
-    R**2 =  1 - (sum(Real_value - Calculate_value)**2) / (sum(Real_value - mean_value)**2)
+            1 - (sum(Real_value - Calculate_value)**2)
+    R**2 =  ------------------------------------------
+            (sum(Real_value - mean_value)**2)
     """
     error = 0
-    var = 0 
-
+    var = 0
     price_values = np.array([price for _, price in data])
     mean_price = np.mean(price_values)
 
@@ -21,10 +21,11 @@ def linear_regression_precision(theta_0, theta_1, data):
         est_price = estimate_price(theta_0, theta_1, km)
         error += (price - est_price) ** 2
         var += (price - mean_price) ** 2
-    
+
     r_2 = 1 - (error / var)
     print("The precision of the algorithm is: ", r_2)
     return r_2
+
 
 def linear_values(theta_0, theta_1, data):
     """
@@ -36,6 +37,7 @@ def linear_values(theta_0, theta_1, data):
         new_data.append([km, estimate_price(theta_0, theta_1, km)])
     return new_data
 
+
 def display_graph(mileage, estimated_price, theta_0, theta_1):
     """
     Display a graph with data from the selected country.
@@ -46,7 +48,7 @@ def display_graph(mileage, estimated_price, theta_0, theta_1):
     linear_data = linear_values(theta_0, theta_1, data)
 
     sorted_data = sorted(data, key=lambda x: x[0])
-    
+
     km, price = zip(*sorted_data)
     ln_km, ln_price = zip(*linear_data)
 
@@ -56,7 +58,7 @@ def display_graph(mileage, estimated_price, theta_0, theta_1):
     ax.set_xlabel("Kms")
     ax.set_yticks(range(min_price, max_price + 1, 200))
     ax.set_ylabel("Price")
-    
+
     ax.plot(ln_km, ln_price, color="r")
     ax.scatter(mileage, estimated_price, color="y")
     ax.scatter(km, price)
