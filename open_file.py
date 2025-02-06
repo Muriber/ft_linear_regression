@@ -1,5 +1,6 @@
 import csv
 
+
 def open_file(path):
     """
     Open a CSV file from a given path and return it as a list
